@@ -159,15 +159,27 @@ public class PetRecord {
     }
     
     public static void updatePet(ArrayList<PetRecord> petRecords) {
-        //TODO: update pet functionality
-        System.out.println("This feature coming soon in a future release.");
-        displayChoices(petRecords);
+        Scanner reader = new Scanner(System.in);
+        System.out.println("Type the pet's ID (as a number) and press ENTER: ");
+        int petID = reader.nextInt();
+        PetRecord pr = petRecords.get(petID);
+        System.out.println("Type the pet's name and press ENTER: ");
+        String petName = reader.next();
+        System.out.println("Type the pet's age (as a number) and press ENTER: ");
+        int petAge = reader.nextInt();
+        petRecords.set(petID, new PetRecord(petName, petAge));
+        System.out.printf("Pet ID %d has been changed from %s, age %d to %s, age %d.", petID, pr.getName(), pr.getAge(), petName, petAge);
+        viewPets(petRecords, 5);
     }
     
     public static void removePet(ArrayList<PetRecord> petRecords) {
-        //TODO: remove Pet functionality
-        System.out.println("This feature coming soon in a future release.");
-        displayChoices(petRecords);
+        Scanner reader = new Scanner(System.in);
+        System.out.println("Type the pet's ID (as a number) and press ENTER: ");
+        int petID = reader.nextInt();
+        PetRecord pr = petRecords.get(petID);
+        petRecords.remove(petID);
+        System.out.printf("%s, age %d, has been deleted.", pr.getName(), pr.getAge());
+        viewPets(petRecords, 5);
     }
     
     public static void launchChoice(int choice, ArrayList<PetRecord> petRecords) {
@@ -196,7 +208,7 @@ public class PetRecord {
         }
     }
     public static void main(String[] args) {
-        ArrayList<PetRecord> petRecords = new ArrayList<PetRecord>();
+        ArrayList<PetRecord> petRecords = new ArrayList<>();
         petRecords.add( new PetRecord("Spot",10) );
         petRecords.add( new PetRecord("Bear",6) );
         System.out.println("Pet Database Program.");
