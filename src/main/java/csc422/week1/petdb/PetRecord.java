@@ -1,7 +1,14 @@
 package csc422.week1.petdb;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -43,12 +50,46 @@ public class PetRecord {
         System.out.println("4) Remove an existing pet");
         System.out.println("5) Search pets by name");
         System.out.println("6) Search pets by age");
-        System.out.println("7) Exit program");
+        System.out.println("7) Load Pets");
+        System.out.println("8) Save Pets");
+        System.out.println("9) Exit program");
         
         int choice = reader.nextInt();
         System.out.println("Your choice: " + choice);
         
         launchChoice(choice, petRecords);
+    }
+    
+    public static void loadPets(ArrayList<PetRecord> petRecords) {
+        File file = new File("pets.txt");
+
+        try {
+            Scanner input = new Scanner(file);
+            while (input.hasNextLine()) {
+                String line = input.nextLine();
+                String [] arrayLine = line.split(" ");
+                petRecords.add(new PetRecord(arrayLine[0], Integer.parseInt(arrayLine[1])));
+            }
+            input.close();
+            viewPets(petRecords, 5);
+        } catch (FileNotFoundException ex) {
+            System.out.println("ERROR: File not found.");
+        }
+    }
+    
+    public static void savePets(ArrayList<PetRecord> petRecords) {
+        try {
+            PrintWriter pw = new PrintWriter(new FileWriter("pets.txt"));
+            for (PetRecord pr : petRecords) {
+                pw.println(pr.getName() + " " + pr.getAge());
+            }
+            pw.close();
+            System.out.println("Pet records have been saved");
+            displayChoices(petRecords);
+        } catch (IOException ex) {
+            System.out.println("ERROR: There has been an IO error.");
+            displayChoices(petRecords);
+        }
     }
     
     public static void viewPets(ArrayList<PetRecord> petRecords, int nextStep) {
@@ -203,14 +244,20 @@ public class PetRecord {
                 searchPetsByAge(petRecords);
                 break;
             case 7:
+                loadPets(petRecords);
+                break;
+            case 8:
+                savePets(petRecords);
+                break;
+            case 9:
                 System.exit(0);
                 break;            
         }
     }
     public static void main(String[] args) {
         ArrayList<PetRecord> petRecords = new ArrayList<>();
-        petRecords.add( new PetRecord("Spot",10) );
-        petRecords.add( new PetRecord("Bear",6) );
+        //petRecords.add( new PetRecord("Spot",10) );
+        //petRecords.add( new PetRecord("Bear",6) );
         System.out.println("Pet Database Program.");
 
         displayChoices(petRecords);
