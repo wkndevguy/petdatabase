@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -167,10 +168,31 @@ public class PetRecord {
     public static void addPets(ArrayList<PetRecord> petRecords) {
         if(petRecords.size()<5) {
             Scanner reader = new Scanner(System.in);
-            System.out.println("Type the pet's name and press ENTER: ");
-            String petName = reader.nextLine();
-            System.out.println("Type the pet's age (as a number) and press ENTER: ");
-            int petAge = reader.nextInt();
+            boolean valid = false;
+            String petName = "";
+            while(!valid) {
+                System.out.println("Type the pet's name and press ENTER: ");
+                petName = reader.next();
+                if(!petName.isEmpty()) {
+                    valid = true;
+                }
+            }
+            boolean tooOld = true;
+            int petAge = 0;
+            while(tooOld) {
+                System.out.println("Type the pet's age (as a number in range 1-20) and press ENTER: ");
+                try {
+                    String strPetAge = reader.next();
+                    petAge = Integer.parseInt(strPetAge);
+                    if(petAge <= 20) {
+                        tooOld = false;
+                    } else {
+                        System.out.println("Must be a number in range 1-20. Please try again.");
+                    }
+                } catch (NumberFormatException e){
+                    System.out.println("Must be a number in range 1-20. Please try again. (CATCH)");
+                }
+            }
             petRecords.add( new PetRecord(petName, petAge) );
 
             System.out.println("Please choose one option.");
@@ -209,10 +231,31 @@ public class PetRecord {
         System.out.println("Type the pet's ID (as a number) and press ENTER: ");
         int petID = reader.nextInt();
         PetRecord pr = petRecords.get(petID);
-        System.out.println("Type the pet's name and press ENTER: ");
-        String petName = reader.next();
-        System.out.println("Type the pet's age (as a number) and press ENTER: ");
-        int petAge = reader.nextInt();
+        boolean valid = false;
+        String petName = "";
+        while(!valid) {
+            System.out.println("Type the pet's name and press ENTER: ");
+            petName = reader.next();
+            if(!petName.isEmpty()) {
+                valid = true;
+            }
+        }
+        boolean tooOld = true;
+        int petAge = 0;
+        while(tooOld) {
+            System.out.println("Type the pet's age (as a number in range 1-20) and press ENTER: ");
+            try {
+                String strPetAge = reader.next();
+                petAge = Integer.parseInt(strPetAge);
+                if(petAge <= 20) {
+                    tooOld = false;
+                } else {
+                    System.out.println("Must be a number in range 1-20. Please try again.");
+                }
+            } catch (NumberFormatException e){
+                System.out.println("Must be a number in range 1-20. Please try again. (CATCH)");
+            }
+        }
         petRecords.set(petID, new PetRecord(petName, petAge));
         System.out.printf("Pet ID %d has been changed from %s, age %d to %s, age %d.", petID, pr.getName(), pr.getAge(), petName, petAge);
         viewPets(petRecords, 5);
