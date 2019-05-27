@@ -165,20 +165,25 @@ public class PetRecord {
     }
     
     public static void addPets(ArrayList<PetRecord> petRecords) {
-        Scanner reader = new Scanner(System.in);
-        System.out.println("Type the pet's name and press ENTER: ");
-        String petName = reader.nextLine();
-        System.out.println("Type the pet's age (as a number) and press ENTER: ");
-        int petAge = reader.nextInt();
-        petRecords.add( new PetRecord(petName, petAge) );
+        if(petRecords.size()<5) {
+            Scanner reader = new Scanner(System.in);
+            System.out.println("Type the pet's name and press ENTER: ");
+            String petName = reader.nextLine();
+            System.out.println("Type the pet's age (as a number) and press ENTER: ");
+            int petAge = reader.nextInt();
+            petRecords.add( new PetRecord(petName, petAge) );
 
-        System.out.println("Please choose one option.");
-        System.out.println("1) Add another pet");
-        System.out.println("0) Return to main menu");
-        int answer = reader.nextInt();
-        if(answer == 1) {
-            viewPets(petRecords, 0);
+            System.out.println("Please choose one option.");
+            System.out.println("1) Add another pet");
+            System.out.println("0) Return to main menu");
+            int answer = reader.nextInt();
+            if(answer == 1) {
+                viewPets(petRecords, 0);
+            } else {
+                displayChoices(petRecords);
+            }
         } else {
+            System.out.println("Limit of 5 pets has been reached. Please remove one or more pets.");
             displayChoices(petRecords);
         }
     }
